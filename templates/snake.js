@@ -1,114 +1,123 @@
+# LET %MAX = 15
 // When the BBC micro:bit runs.
 function onStart() {
-	microbit.say("A&B");
+	_.say("A&B");
 	while (true) {
-		globals.x = 2;
-		globals.y = 5;
-		globals.dx = 0;
-		globals.dy = -1;
-		globals.length = 2;
-		globals.headPointer = 0;
-		globals.appleX = 2;
-		globals.appleY = 4;
-		globals.score = -1;
-		globals.movedThisGo = false;
-		globals.nextMove = 0;
-# LET %MAX = 10
+		$.x = 2;
+		$.y = 5;
+		$.dx = 0;
+		$.dy = -1;
+		$.length = 2;
+		$.headPointer = 0;
+		$.appleX = 2;
+		$.appleY = 4;
+		$.score = -1;
+		$.movedThisGo = false;
+		$.nextMove = 0;
+		/* The BBC micro:bit's Javascript does not support arrays,
+		so we have to declare a lot of variables: */
 # FOR %N = 0 TO %MAX
-		globals.oldX%N = -1;
-		globals.oldY%N = -1;
+		$.oldX%N = -1;
+		$.oldY%N = -1;
 # NEXT %N
-		globals.gameOver = false;
-		globals.gameStarted = false;
-		while (!globals.gameStarted) {
+		$.gameOver = false;
+		$.gameStarted = false;
+		while (!$.gameStarted) {
 			wait(50);
 		}
-		while (!globals.gameOver) {
-			wait(300);
-			globals.x = globals.x + globals.dx;
-			globals.y = globals.y + globals.dy;
-			if (globals.nextMove == 1) {
+		_.clear();
+		while (!$.gameOver) {
+			for (var i = 0; i < 4; i = i + 1) {
+				_.off(globals.appleX, globals.appleY);
+				wait(35);
+				_.on(globals.appleX, globals.appleY);
+				wait(35);
+			}
+			$.x = $.x + $.dx;
+			$.y = $.y + $.dy;
+			if ($.nextMove == 1) {
 				turnLeft();
 			}
-			if (globals.nextMove == 2) {
+			if ($.nextMove == 2) {
 				turnRight();
 			}
-			globals.nextMove = 0;
-			globals.movedThisGo = false;
-			if ((globals.appleX == globals.x) && (globals.appleY == globals.y)) {
-				globals.score = globals.score + 1;
+			$.nextMove = 0;
+			$.movedThisGo = false;
+			if (($.appleX == $.x) && ($.appleY == $.y)) {
+				$.score = $.score + 1;
 				while (true) {
-					globals.appleX = Random.number(0, 4);
-					globals.appleY = Random.number(0, 4);
-					if (!microbit.isOn(globals.appleX, globals.appleY)) {
+					$.appleX = Random.number(0, 4);
+					$.appleY = Random.number(0, 4);
+					if (!_.isOn($.appleX, $.appleY)) {
 						break;
 					}
 				}
-				microbit.on(globals.appleX, globals.appleY);
-				if (globals.length < %MAX) {
-					globals.length = globals.length + 1;
+				_.on($.appleX, $.appleY);
+				if ($.length < %MAX) {
+					$.length = $.length + 1;
 				}
 			} else {
-				if (microbit.isOn(globals.x, globals.y)) {
-					globals.gameOver = true;
+				if (_.isOn($.x, $.y)) {
+					$.gameOver = true;
 				}
 			}
-			if ((globals.x < 0) || (globals.y < 0) || (globals.x > 4) || (globals.y > 4)) {
-				globals.gameOver = true;
+			if (($.x < 0) || ($.y < 0) || ($.x > 4) || ($.y > 4)) {
+				$.gameOver = true;
 			}
-			microbit.on(globals.x, globals.y);
-# FOR %N = 0 TO 10
-			if (globals.headPointer == %N) {
-				globals.oldX%N = globals.x;
-				globals.oldY%N = globals.y;
+			_.on($.x, $.y);
+			/* Again, we have to do a lot of "if"s to simulate an array: */
+# FOR %N = 0 TO %MAX
+			if ($.headPointer == %N) {
+				$.oldX%N = $.x;
+				$.oldY%N = $.y;
 			}
 # NEXT %N
-			var tailPointer = Math.mod(globals.headPointer + globals.length, %MAX);
-# FOR %N = 0 TO 10
+			var tailPointer = Math.mod($.headPointer + $.length, %MAX);
+# FOR %N = 0 TO %MAX
 			if (tailPointer == %N) {
-				microbit.off(globals.oldX%N, globals.oldY%N);
+				_.off($.oldX%N, $.oldY%N);
 			}
 # NEXT %N
-			if (globals.headPointer == 0) {
-				globals.headPointer = %MAX;
+			if ($.headPointer == 0) {
+				$.headPointer = %MAX;
 			}
-			globals.headPointer = globals.headPointer - 1;
+			$.headPointer = $.headPointer - 1;
 		}
-		microbit.say(globals.score);
+		_.say($.score);
 	}
 }
 
 function onPressA() {
-	if (globals.movedThisGo) {
-		globals.nextMove = 1;
+	if ($.movedThisGo) {
+		$.nextMove = 1;
 	} else {
 		turnLeft();
 	}
 }
 
 function onPressB() {
-	if (globals.movedThisGo) {
-		globals.nextMove = 2;
+	if ($.movedThisGo) {
+		$.nextMove = 2;
 	} else {
 		turnRight();
 	}
 }
 
 function turnLeft() {
-	var oldDx = globals.dx;
-	globals.dx = globals.dy;
-	globals.dy = 0 - oldDx;
-	globals.movedThisGo = true;
+	var oldDx = $.dx;
+	$.dx = $.dy;
+	$.dy = 0 - oldDx;
+	$.movedThisGo = true;
 }
 
 function turnRight() {
-	var oldDx = globals.dx;
-	globals.dx = 0 - globals.dy;
-	globals.dy = oldDx;
-	globals.movedThisGo = true;
+	var oldDx = $.dx;
+	$.dx = 0 - $.dy;
+	$.dy = oldDx;
+	$.movedThisGo = true;
 }
 
 function onPressAandB() {
-	globals.gameStarted = true;
+	$.gameStarted = true;
 }
 

@@ -10,7 +10,10 @@ fs.readdir('templates', function (err, data) {
 				return console.err(err);
 			var out = [],
 				input = text.toString().split('\n'),
-				vars = {},
+				vars = {
+					'\\$': 'globals',
+					'_': 'microbit'
+				},
 				fors = {},
 				loops = [];
 			for (var i = 0; i < input.length; ++i) {

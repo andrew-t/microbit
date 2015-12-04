@@ -13,6 +13,8 @@ function onStart() {
 		globals.score = -1;
 		globals.movedThisGo = false;
 		globals.nextMove = 0;
+		/* The BBC micro:bit's Javascript does not support arrays,
+		so we have to declare a lot of variables: */
 		globals.oldX0 = -1;
 		globals.oldY0 = -1;
 		globals.oldX1 = -1;
@@ -33,13 +35,29 @@ function onStart() {
 		globals.oldY8 = -1;
 		globals.oldX9 = -1;
 		globals.oldY9 = -1;
+		globals.oldX10 = -1;
+		globals.oldY10 = -1;
+		globals.oldX11 = -1;
+		globals.oldY11 = -1;
+		globals.oldX12 = -1;
+		globals.oldY12 = -1;
+		globals.oldX13 = -1;
+		globals.oldY13 = -1;
+		globals.oldX14 = -1;
+		globals.oldY14 = -1;
 		globals.gameOver = false;
 		globals.gameStarted = false;
 		while (!globals.gameStarted) {
 			wait(50);
 		}
+		microbit.clear();
 		while (!globals.gameOver) {
-			wait(300);
+			for (var i = 0; i < 4; i = i + 1) {
+				microbit.off(globals.appleX, globals.appleY);
+				wait(35);
+				microbit.on(globals.appleX, globals.appleY);
+				wait(35);
+			}
 			globals.x = globals.x + globals.dx;
 			globals.y = globals.y + globals.dy;
 			if (globals.nextMove == 1) {
@@ -60,7 +78,7 @@ function onStart() {
 					}
 				}
 				microbit.on(globals.appleX, globals.appleY);
-				if (globals.length < 10) {
+				if (globals.length < 15) {
 					globals.length = globals.length + 1;
 				}
 			} else {
@@ -72,6 +90,7 @@ function onStart() {
 				globals.gameOver = true;
 			}
 			microbit.on(globals.x, globals.y);
+			/* Again, we have to do a lot of "if"s to simulate an array: */
 			if (globals.headPointer == 0) {
 				globals.oldX0 = globals.x;
 				globals.oldY0 = globals.y;
@@ -112,7 +131,27 @@ function onStart() {
 				globals.oldX9 = globals.x;
 				globals.oldY9 = globals.y;
 			}
-			var tailPointer = Math.mod(globals.headPointer + globals.length, 10);
+			if (globals.headPointer == 10) {
+				globals.oldX10 = globals.x;
+				globals.oldY10 = globals.y;
+			}
+			if (globals.headPointer == 11) {
+				globals.oldX11 = globals.x;
+				globals.oldY11 = globals.y;
+			}
+			if (globals.headPointer == 12) {
+				globals.oldX12 = globals.x;
+				globals.oldY12 = globals.y;
+			}
+			if (globals.headPointer == 13) {
+				globals.oldX13 = globals.x;
+				globals.oldY13 = globals.y;
+			}
+			if (globals.headPointer == 14) {
+				globals.oldX14 = globals.x;
+				globals.oldY14 = globals.y;
+			}
+			var tailPointer = Math.mod(globals.headPointer + globals.length, 15);
 			if (tailPointer == 0) {
 				microbit.off(globals.oldX0, globals.oldY0);
 			}
@@ -143,8 +182,23 @@ function onStart() {
 			if (tailPointer == 9) {
 				microbit.off(globals.oldX9, globals.oldY9);
 			}
+			if (tailPointer == 10) {
+				microbit.off(globals.oldX10, globals.oldY10);
+			}
+			if (tailPointer == 11) {
+				microbit.off(globals.oldX11, globals.oldY11);
+			}
+			if (tailPointer == 12) {
+				microbit.off(globals.oldX12, globals.oldY12);
+			}
+			if (tailPointer == 13) {
+				microbit.off(globals.oldX13, globals.oldY13);
+			}
+			if (tailPointer == 14) {
+				microbit.off(globals.oldX14, globals.oldY14);
+			}
 			if (globals.headPointer == 0) {
-				globals.headPointer = 10;
+				globals.headPointer = 15;
 			}
 			globals.headPointer = globals.headPointer - 1;
 		}
