@@ -27,14 +27,6 @@ function onStart() {
 		}
 		_.clear();
 		while (!$.gameOver) {
-			for (var i = 0; i < 4; i = i + 1) {
-				_.off(globals.appleX, globals.appleY);
-				wait(35);
-				_.on(globals.appleX, globals.appleY);
-				wait(35);
-			}
-			$.x = $.x + $.dx;
-			$.y = $.y + $.dy;
 			if ($.nextMove == 1) {
 				turnLeft();
 			}
@@ -43,6 +35,14 @@ function onStart() {
 			}
 			$.nextMove = 0;
 			$.movedThisGo = false;
+			for (var i = 0; i < 4; i = i + 1) {
+				_.off(globals.appleX, globals.appleY);
+				wait(35);
+				_.on(globals.appleX, globals.appleY);
+				wait(35);
+			}
+			$.x = $.x + $.dx;
+			$.y = $.y + $.dy;
 			if (($.appleX == $.x) && ($.appleY == $.y)) {
 				$.score = $.score + 1;
 				while (true) {

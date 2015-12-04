@@ -52,14 +52,6 @@ function onStart() {
 		}
 		microbit.clear();
 		while (!globals.gameOver) {
-			for (var i = 0; i < 4; i = i + 1) {
-				microbit.off(globals.appleX, globals.appleY);
-				wait(35);
-				microbit.on(globals.appleX, globals.appleY);
-				wait(35);
-			}
-			globals.x = globals.x + globals.dx;
-			globals.y = globals.y + globals.dy;
 			if (globals.nextMove == 1) {
 				turnLeft();
 			}
@@ -68,6 +60,14 @@ function onStart() {
 			}
 			globals.nextMove = 0;
 			globals.movedThisGo = false;
+			for (var i = 0; i < 4; i = i + 1) {
+				microbit.off(globals.appleX, globals.appleY);
+				wait(35);
+				microbit.on(globals.appleX, globals.appleY);
+				wait(35);
+			}
+			globals.x = globals.x + globals.dx;
+			globals.y = globals.y + globals.dy;
 			if ((globals.appleX == globals.x) && (globals.appleY == globals.y)) {
 				globals.score = globals.score + 1;
 				while (true) {
