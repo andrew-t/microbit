@@ -10,7 +10,7 @@ function onStart() {
 		globals.headPointer = 0;
 		globals.appleX = 2;
 		globals.appleY = 4;
-		globals.score = 0;
+		globals.score = -1;
 		globals.movedThisGo = false;
 		globals.nextMove = 0;
 		globals.oldX0 = -1;
@@ -66,12 +66,10 @@ function onStart() {
 			} else {
 				if (microbit.isOn(globals.x, globals.y)) {
 					globals.gameOver = true;
-					globals.gameOverMessage = "You hit yourself.";
 				}
 			}
 			if ((globals.x < 0) || (globals.y < 0) || (globals.x > 4) || (globals.y > 4)) {
 				globals.gameOver = true;
-				globals.gameOverMessage = "You hit yourself.";
 			}
 			microbit.on(globals.x, globals.y);
 			if (globals.headPointer == 0) {
@@ -150,7 +148,7 @@ function onStart() {
 			}
 			globals.headPointer = globals.headPointer - 1;
 		}
-		microbit.say(globals.gameOverMessage);
+		microbit.say(globals.score);
 	}
 }
 
