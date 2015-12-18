@@ -48,11 +48,11 @@ function onPressAandB() {
 	if (!$.isWall) {
 		$.x = $.inMazeX;
 		$.y = $.inMazeY;
+		drawMaze();
+		wait(100);
 		if ($.y < 0) {
+			wait(200);
 			_.draw(Pattern("01010.01010.00000.10001.01110"));
-		} else {
-			drawMaze();
-			wait(100);
 		}
 	}
 }
@@ -155,7 +155,7 @@ function isWall() {
 	} else { if ($.inMazeY == 3) {
 		$.isWall = ($.inMazeX == 8);
 	} else { if ($.inMazeY == 4) {
-		$.isWall = ($.inMazeX != 15) && ($.inMazeX != 11);
+		$.isWall = ($.inMazeX != 5) && ($.inMazeX != 11);
 	} else { if ($.inMazeY == 5) {
 		$.isWall = false;
 	} else { if ($.inMazeY == 6) {

@@ -48,11 +48,11 @@ function onPressAandB() {
 	if (!globals.isWall) {
 		globals.x = globals.inMazeX;
 		globals.y = globals.inMazeY;
+		drawMaze();
+		wait(100);
 		if (globals.y < 0) {
+			wait(200);
 			microbit.draw(Pattern("01010.01010.00000.10001.01110"));
-		} else {
-			drawMaze();
-			wait(100);
 		}
 	}
 }
@@ -155,7 +155,7 @@ function isWall() {
 	} else { if (globals.inMazeY == 3) {
 		globals.isWall = (globals.inMazeX == 8);
 	} else { if (globals.inMazeY == 4) {
-		globals.isWall = (globals.inMazeX != 15) && (globals.inMazeX != 11);
+		globals.isWall = (globals.inMazeX != 5) && (globals.inMazeX != 11);
 	} else { if (globals.inMazeY == 5) {
 		globals.isWall = false;
 	} else { if (globals.inMazeY == 6) {
