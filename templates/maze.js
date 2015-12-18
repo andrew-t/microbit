@@ -23,7 +23,7 @@ function onStart() {
 	$.x = 6;
 	$.y = 7;
 	$.dx = -1;
-	$.dy = 1;
+	$.dy = 0;
 	drawMaze();
 }
 
@@ -48,7 +48,12 @@ function onPressAandB() {
 	if (!$.isWall) {
 		$.x = $.inMazeX;
 		$.y = $.inMazeY;
-		drawMaze();
+		if ($.y < 0) {
+			_.draw(Pattern("01010.01010.00000.10001.01110"));
+		} else {
+			drawMaze();
+			wait(100);
+		}
 	}
 }
 
@@ -79,19 +84,79 @@ function drawMaze() {
 	isWall();
 	var e = $.isWall;
 	_.clear();
-	if (a) { _.on(0, 0); _.on(0, 4); }
-	if (b && !a) { _.on(0, 1); _.on(0, 3); }
-	if (!a && !b) { _.on(0, 2); }
-	if (c || (a && !b) || !a) { _.on(1, 1); _.on(1, 3); }
-	if (c) { _.on(2, 1); _.on(2, 3); } else { _.on(2, 2); }
-	if (c || (e && !d) || !e) { _.on(3, 1); _.on(3, 3); }
-	if (!e && !d) { _.on(4, 2); }
-	if (d && !e) { _.on(4, 1); _.on(4, 3); }
-	if (e) { _.on(4, 0); _.on(4, 4); }
+	if (a) {
+		_.on(0, 2);
+	}
+	if (b) {
+		_.on(0, 0);
+	}
+	if (c) {
+		_.on(2, 0);
+	}
+	if (d) {
+		_.on(4, 0);
+	}
+	if (e) {
+		_.on(4, 2);
+	}
+	/*if (a) {
+		_.on(0, 0);
+		_.on(0, 4);
+	} else {
+		if (b) {
+			_.on(0, 1);
+			_.on(1, 2);
+			_.on(0, 3);
+		} else {
+			_.on(0, 2)
+			_.on(1, 2)
+		}
+	}
+	if (c) {
+		_.on(1, 1);
+		_.on(1, 3);
+		_.on(2, 1);
+		_.on(2, 3);
+		_.on(3, 1);
+		_.on(3, 3);
+		if (a) {
+			_.on(1, 2);
+		}
+		if (e) {
+			_.on(3, 2);
+		}
+	} else {
+		_.on(2, 2);
+		if (a || b && (!a || !b)) {
+			_.on(1, 1);
+			_.on(1, 3);
+		} else {
+			_.on(1, 2);
+		}
+		if (e || d && (!e || !d)) {
+			_.on(3, 1);
+			_.on(3, 3);
+		} else {
+			_.on(3, 2);
+		}
+	}
+	if (e) {
+		_.on(4, 0);
+		_.on(4, 4);
+	} else {
+		if (d) {
+			_.on(4, 1);
+			_.on(3, 2);
+			_.on(4, 3);
+		} else {
+			_.on(4, 2);
+			_.on(3, 2);
+		}
+	}*/
 }
 
 function isWall() {
-	if ($.inMazeY < 0) {
+	if (($.inMazeY < 0) || ($.inMazeY > 10) || ($.inMazeY < 0) || ($.inMazeY > 14)) {
 		$.isWall = false;
 	} else { if (($.inMazeX == 0) || ($.inMazeX == 14)) {
 		$.isWall = true;
@@ -113,11 +178,9 @@ function isWall() {
 		$.isWall = ($.inMazeX == 7);
 	} else { if ($.inMazeY == 8) {
 		$.isWall = ($.inMazeX != 4) && ($.inMazeX != 19);
-	} else { if ($.inMazeY == 9) {
-		$.isWall = false;
-	} else { if ($.inMazeX == 10) {
+	} else { if ($.inMazeY == 10) {
 		$.isWall = true;
 	} else {
 		$.isWall = false;
-	}}}}}}}}}}}}}
+	}}}}}}}}}}}}
 }

@@ -48,7 +48,12 @@ function onPressAandB() {
 	if (!globals.isWall) {
 		globals.x = globals.inMazeX;
 		globals.y = globals.inMazeY;
-		drawMaze();
+		if (globals.y < 0) {
+			microbit.draw(Pattern("01010.01010.00000.10001.01110"));
+		} else {
+			drawMaze();
+			wait(100);
+		}
 	}
 }
 
@@ -79,19 +84,79 @@ function drawMaze() {
 	isWall();
 	var e = globals.isWall;
 	microbit.clear();
-	if (a) { microbit.on(0, 0); microbit.on(0, 4); }
-	if (b && !a) { microbit.on(0, 1); microbit.on(0, 3); }
-	if (!a && !b) { microbit.on(0, 2); }
-	if (c || (a && !b) || !a) { microbit.on(1, 1); microbit.on(1, 3); }
-	if (c) { microbit.on(2, 1); microbit.on(2, 3); } else { microbit.on(2, 2); }
-	if (c || (e && !d) || !e) { microbit.on(3, 1); microbit.on(3, 3); }
-	if (!e && !d) { microbit.on(4, 2); }
-	if (d && !e) { microbit.on(4, 1); microbit.on(4, 3); }
-	if (e) { microbit.on(4, 0); microbit.on(4, 4); }
+	if (a) {
+		microbit.on(0, 2);
+	}
+	if (b) {
+		microbit.on(0, 0);
+	}
+	if (c) {
+		microbit.on(2, 0);
+	}
+	if (d) {
+		microbit.on(4, 0);
+	}
+	if (e) {
+		microbit.on(4, 2);
+	}
+	/*if (a) {
+		microbit.on(0, 0);
+		microbit.on(0, 4);
+	} else {
+		if (b) {
+			microbit.on(0, 1);
+			microbit.on(1, 2);
+			microbit.on(0, 3);
+		} else {
+			microbit.on(0, 2)
+			microbit.on(1, 2)
+		}
+	}
+	if (c) {
+		microbit.on(1, 1);
+		microbit.on(1, 3);
+		microbit.on(2, 1);
+		microbit.on(2, 3);
+		microbit.on(3, 1);
+		microbit.on(3, 3);
+		if (a) {
+			microbit.on(1, 2);
+		}
+		if (e) {
+			microbit.on(3, 2);
+		}
+	} else {
+		microbit.on(2, 2);
+		if (a || b && (!a || !b)) {
+			microbit.on(1, 1);
+			microbit.on(1, 3);
+		} else {
+			microbit.on(1, 2);
+		}
+		if (e || d && (!e || !d)) {
+			microbit.on(3, 1);
+			microbit.on(3, 3);
+		} else {
+			microbit.on(3, 2);
+		}
+	}
+	if (e) {
+		microbit.on(4, 0);
+		microbit.on(4, 4);
+	} else {
+		if (d) {
+			microbit.on(4, 1);
+			microbit.on(3, 2);
+			microbit.on(4, 3);
+		} else {
+			microbit.on(4, 2);
+			microbit.on(3, 2);
+		}
+	}*/
 }
 
 function isWall() {
-	if (globals.inMazeY < 0) {
+	if ((globals.inMazeY < 0) || (globals.inMazeY > 10) || (globals.inMazeY < 0) || (globals.inMazeY > 14)) {
 		globals.isWall = false;
 	} else { if ((globals.inMazeX == 0) || (globals.inMazeX == 14)) {
 		globals.isWall = true;
@@ -113,11 +178,9 @@ function isWall() {
 		globals.isWall = (globals.inMazeX == 7);
 	} else { if (globals.inMazeY == 8) {
 		globals.isWall = (globals.inMazeX != 4) && (globals.inMazeX != 19);
-	} else { if (globals.inMazeY == 9) {
-		globals.isWall = false;
-	} else { if (globals.inMazeX == 10) {
+	} else { if (globals.inMazeY == 10) {
 		globals.isWall = true;
 	} else {
 		globals.isWall = false;
-	}}}}}}}}}}}}}
+	}}}}}}}}}}}}
 }
