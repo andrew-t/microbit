@@ -23,7 +23,7 @@ function onStart() {
 	globals.x = 6;
 	globals.y = 7;
 	globals.dx = -1;
-	globals.dy = 1;
+	globals.dy = 0;
 	drawMaze();
 }
 
@@ -85,74 +85,60 @@ function drawMaze() {
 	var e = globals.isWall;
 	microbit.clear();
 	if (a) {
-		microbit.on(0, 2);
-	}
-	if (b) {
-		microbit.on(0, 0);
-	}
-	if (c) {
-		microbit.on(2, 0);
-	}
-	if (d) {
-		microbit.on(4, 0);
-	}
-	if (e) {
-		microbit.on(4, 2);
-	}
-	/*if (a) {
 		microbit.on(0, 0);
 		microbit.on(0, 4);
-	} else {
-		if (b) {
-			microbit.on(0, 1);
-			microbit.on(1, 2);
-			microbit.on(0, 3);
-		} else {
-			microbit.on(0, 2)
-			microbit.on(1, 2)
-		}
 	}
-	if (c) {
+	if (b && !a) {
+		microbit.on(0, 1);
+		microbit.on(0, 3);
+	}
+	if (!b && !a) {
+		microbit.on(0, 2);
+	}
+	if (a || b || c) {
 		microbit.on(1, 1);
 		microbit.on(1, 3);
+	}
+	if (c) {
 		microbit.on(2, 1);
 		microbit.on(2, 3);
-		microbit.on(3, 1);
-		microbit.on(3, 3);
-		if (a) {
-			microbit.on(1, 2);
-		}
-		if (e) {
-			microbit.on(3, 2);
-		}
-	} else {
+	}
+	if (!c) {
 		microbit.on(2, 2);
-		if (a || b && (!a || !b)) {
-			microbit.on(1, 1);
-			microbit.on(1, 3);
-		} else {
-			microbit.on(1, 2);
-		}
-		if (e || d && (!e || !d)) {
-			microbit.on(3, 1);
-			microbit.on(3, 3);
-		} else {
-			microbit.on(3, 2);
-		}
 	}
 	if (e) {
 		microbit.on(4, 0);
 		microbit.on(4, 4);
-	} else {
-		if (d) {
-			microbit.on(4, 1);
-			microbit.on(3, 2);
-			microbit.on(4, 3);
-		} else {
-			microbit.on(4, 2);
-			microbit.on(3, 2);
-		}
-	}*/
+	}
+	if (d && !e) {
+		microbit.on(4, 1);
+		microbit.on(4, 3);
+	}
+	if (!d && !e) {
+		microbit.on(4, 2);
+	}
+	if (e || d || c) {
+		microbit.on(3, 1);
+		microbit.on(3, 3);
+	}
+	if (a && (!b || c)) {
+		microbit.on(1, 2);
+	}
+	if (!a && !b && c) {
+		microbit.on(1, 2);
+	}
+	if (!a && b && !c) {
+		microbit.on(1, 2);
+	}
+	if (e && (!d || c)) {
+		microbit.on(3, 2);
+	}
+	if (!e && !d && c) {
+		microbit.on(3, 2);
+	}
+	if (!e && d && !c) {
+		microbit.on(3, 2);
+	}
 }
 
 function isWall() {
