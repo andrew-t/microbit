@@ -124,7 +124,7 @@ function drawMaze() {
 	if (a && (!b || c)) {
 		_.on(1, 2);
 	}
-	if (!a && !b && c) {
+	if (!a && !b) {
 		_.on(1, 2);
 	}
 	if (!a && b && !c) {
@@ -133,7 +133,7 @@ function drawMaze() {
 	if (e && (!d || c)) {
 		_.on(3, 2);
 	}
-	if (!e && !d && c) {
+	if (!e && !d) {
 		_.on(3, 2);
 	}
 	if (!e && d && !c) {
