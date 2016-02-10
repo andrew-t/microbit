@@ -22,8 +22,10 @@ fs.readdir('templates', function (err, data) {
 		if (/\.js$/.test(fn)) fs.readFile('templates/' + fn, function (err, text) {
 			if (err)
 				return console.err(err);
-			var functions = {},
-				currentFunction,
+			var functions = {
+					'': []
+				},
+				currentFunction = functions[''],
 				input = text.toString().split('\n'),
 				vars = {
 					'\\$': 'globals',
@@ -34,6 +36,8 @@ fs.readdir('templates', function (err, data) {
 				inComment = false;
 			for (var i = 0; i < input.length; ++i) {
 				var line = input[i];
+
+				// console.log(line)
 
 				if (/^\s*\/\*.*\*\/\s*$/.test(line))
 					continue;
@@ -57,7 +61,7 @@ fs.readdir('templates', function (err, data) {
 					continue;
 				}
 				if (line == '}') {
-					currentFunction = null;
+					currentFunction = functions[''];
 					continue;
 				}
 
@@ -70,6 +74,7 @@ fs.readdir('templates', function (err, data) {
 						return part;
 					});
 					switch (parts[1]) {
+						// TODO - check if loops with negative steps work OK
 						case 'FOR':
 							fors[parts[2]] = {
 								to: parseInt(parts[6], 10),
@@ -96,10 +101,14 @@ fs.readdir('templates', function (err, data) {
 			}
 
 			var out = [];
-			console.log(Object.keys(functions))
+			// console.log(Object.keys(functions));
+
+			// pushFuncContents('');
+
 			for (var func in functions)
 				if (!inlineFunctions || (nativeFunctions.indexOf(func) >= 0)) {
 					out.push('function ' + func + '() {');
+					pushFuncContents('');
 					pushFuncContents(func);
 					out.push('}');
 					out.push('');
