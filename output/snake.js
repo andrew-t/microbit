@@ -1,4 +1,3 @@
-// When the BBC micro:bit runs.
 function onStart() {
 	microbit.say("A&B");
 	while (true) {
@@ -13,8 +12,6 @@ function onStart() {
 		globals.score = -1;
 		globals.movedThisGo = false;
 		globals.nextMove = 0;
-		/* The BBC micro:bit's Javascript does not support arrays,
-		so we have to declare a lot of variables: */
 		globals.oldX0 = -1;
 		globals.oldY0 = -1;
 		globals.oldX1 = -1;
@@ -53,10 +50,16 @@ function onStart() {
 		microbit.clear();
 		while (!globals.gameOver) {
 			if (globals.nextMove == 1) {
-				turnLeft();
+	var oldDx = globals.dx;
+	globals.dx = globals.dy;
+	globals.dy = 0 - oldDx;
+	globals.movedThisGo = true;
 			}
 			if (globals.nextMove == 2) {
-				turnRight();
+	var oldDx = globals.dx;
+	globals.dx = 0 - globals.dy;
+	globals.dy = oldDx;
+	globals.movedThisGo = true;
 			}
 			globals.nextMove = 0;
 			globals.movedThisGo = false;
@@ -90,7 +93,6 @@ function onStart() {
 				globals.gameOver = true;
 			}
 			microbit.on(globals.x, globals.y);
-			/* Again, we have to do a lot of "if"s to simulate an array: */
 			if (globals.headPointer == 0) {
 				globals.oldX0 = globals.x;
 				globals.oldY0 = globals.y;
@@ -210,7 +212,10 @@ function onPressA() {
 	if (globals.movedThisGo) {
 		globals.nextMove = 1;
 	} else {
-		turnLeft();
+	var oldDx = globals.dx;
+	globals.dx = globals.dy;
+	globals.dy = 0 - oldDx;
+	globals.movedThisGo = true;
 	}
 }
 
@@ -218,25 +223,13 @@ function onPressB() {
 	if (globals.movedThisGo) {
 		globals.nextMove = 2;
 	} else {
-		turnRight();
-	}
-}
-
-function turnLeft() {
-	var oldDx = globals.dx;
-	globals.dx = globals.dy;
-	globals.dy = 0 - oldDx;
-	globals.movedThisGo = true;
-}
-
-function turnRight() {
 	var oldDx = globals.dx;
 	globals.dx = 0 - globals.dy;
 	globals.dy = oldDx;
 	globals.movedThisGo = true;
+	}
 }
 
 function onPressAandB() {
 	globals.gameStarted = true;
 }
-
