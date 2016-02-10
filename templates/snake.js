@@ -1,3 +1,5 @@
+//ICON 01111.01001.00001.01001.00011
+
 # LET %MAX = 15
 // When the BBC micro:bit runs.
 function onStart() {
