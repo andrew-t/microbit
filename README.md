@@ -2,16 +2,16 @@
 
 ## micro:bit "Javascript" limitations
 
-* You cannot call a function.
+* You can't call a function.
 * You must always use braces around `if` statements etc — in particular you cannot use `else if`. You must use `else { if ... }`
-* You cannot use `switch`.
+* You can't use `switch`.
 * Variables are treated as strongly typed.
-* You cannot do string manipulation. (TODO: CHECK THIS)
-* You cannot use arrays. (TODO: CAN YOU USE OBJECTS?)
-* You cannot use increment operators, even in for loops. Use `i = i + 1`.
+* You can't use arrays or objects.
+* You can't use increment operators, even in for loops. Use `i = i + 1`.
 * You can't declare variables outside a function; put them on `globals`.
 * You can't declare variables without also assigning them.
-* You can't declare two variables on one line (`var a = 1, b = 2;`)
+* You can't declare two variables on one line (`var a = 1, b = 2;`).
+* You can't use non-integer numbers. `3/2 == 1`.
 
 ## Generator limitations:
 

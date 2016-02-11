@@ -36,6 +36,8 @@ function onStart() {
 			showBlock();
 			checkLines();
 			newBlock();
+		} else {
+			$.twiceCentreY = $.twiceCentreY + 2;
 		}
 	}
 }
@@ -51,6 +53,8 @@ function newBlock() {
 		$.testBlock1Y = 1;
 		$.testBlock2X = 3;
 		$.testBlock2Y = 1;
+		$.twiceCentreX = 5;
+		$.twiceCentreY = 1;
 	}
 	if (blockType == 1) {
 		// J
@@ -61,12 +65,16 @@ function newBlock() {
 		$.testBlock1Y = 1;
 		$.testBlock2X = 1;
 		$.testBlock2Y = 1;
+		$.twiceCentreX = 5;
+		$.twiceCentreY = 1;
 	}
 	if (blockType == 2) {
 		// .
 		$.blockCount = 1;
 		$.testBlock0X = 2;
 		$.testBlock0Y = 0;
+		$.twiceCentreX = 4;
+		$.twiceCentreY = 0;
 	}
 	if (blockType == 3) {
 		// -
@@ -75,6 +83,8 @@ function newBlock() {
 		$.testBlock0Y = 0;
 		$.testBlock1X = 3;
 		$.testBlock1Y = 0;
+		$.twiceCentreX = 4;
+		$.twiceCentreY = 0;
 	}
 	if (blockType == 4) {
 		// |
@@ -83,6 +93,8 @@ function newBlock() {
 		$.testBlock0Y = 0;
 		$.testBlock1X = 2;
 		$.testBlock1Y = 1;
+		$.twiceCentreX = 4;
+		$.twiceCentreY = 0;
 	}
 	if (blockType == 5) {
 		// []
@@ -95,6 +107,8 @@ function newBlock() {
 		$.testBlock2Y = 0;
 		$.testBlock3X = 3;
 		$.testBlock3Y = 1;
+		$.twiceCentreX = 5;
+		$.twiceCentreY = 1;
 	}
 	if (blockType == 6) {
 		// upside-down L
@@ -105,6 +119,8 @@ function newBlock() {
 		$.testBlock1Y = 1;
 		$.testBlock2X = 3;
 		$.testBlock2Y = 0;
+		$.twiceCentreX = 5;
+		$.twiceCentreY = 1;
 	}
 	if (blockType == 7) {
 		// upside-down J
@@ -115,6 +131,8 @@ function newBlock() {
 		$.testBlock1Y = 1;
 		$.testBlock2X = 1;
 		$.testBlock2Y = 0;
+		$.twiceCentreX = 5;
+		$.twiceCentreY = 1;
 	}
 	moveBlock();
 	if (!$.movedOK) {
@@ -125,19 +143,37 @@ function newBlock() {
 function onPressA() {
 	hideBlock();
 # FOR %N = 0 TO %MAX
-		$.testBlock%NX = $.block%NX - 1;
-		$.testBlock%NY = $.block%NY;
+	$.testBlock%NX = $.block%NX - 1;
+	$.testBlock%NY = $.block%NY;
 # NEXT %N
+	if ($.movedOK) {
+		$.twiceCentreX = $.twiceCentreX - 2;
+	}
 	moveBlock();
 }
 
 function onPressB() {
 	hideBlock();
 # FOR %N = 0 TO %MAX
-		$.testBlock%NX = $.block%NX + 1;
-		$.testBlock%NY = $.block%NY;
+	$.testBlock%NX = $.block%NX + 1;
+	$.testBlock%NY = $.block%NY;
 # NEXT %N
+	if ($.movedOK) {
+		$.twiceCentreX = $.twiceCentreX + 2;
+	}
 	moveBlock();
+}
+
+function onPressAandB() {
+	$.movedOK = false;
+	hideBlock();
+	while (!$.movedOK) {
+# FOR %N = 0 TO %MAX
+		$.testBlock%NX = ($.twiceCentreX + (2 * $.block%NY) - $.twiceCentreY) / 2;
+		$.testBlock%NY = ($.twiceCentreY - (2 * $.block%NX) + $.twiceCentreX) / 2;
+# NEXT %N
+		moveBlock();
+	}
 }
 
 function moveBlock() {
@@ -146,7 +182,7 @@ function moveBlock() {
 	if (%N < $.blockCount) {
 		if (($.testBlock%NX < 0) ||
 			($.testBlock%NX > 4) ||
-			($.testBlock%NY < 0) ||
+			//($.testBlock%NY < 0) ||
 			($.testBlock%NY > 4) ||
 			_.isOn($.testBlock%NX, $.testBlock%NY)) {
 				$.movedOK = false;
