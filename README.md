@@ -21,8 +21,8 @@ The "two cars" phone app: on each side of the screen is a car driving past a ser
 To get around a few limitations of the micro:bit code editor, I have written [a very basic preprocessor](compile.js) which allows me to polyfill a few more vital features the native implementation does not support. Therefore, the full process to modidy a game is:
 
 1. Clone this repo and install Nodejs
-2. Edit the file in `templates`.
-3. Run `compile.js`
+2. Edit the file in [`templates`](templates).
+3. Run [`compile.js`](compile.js).
 4. Paste the result into the code editor at [microbit.co.uk/app](https://www.microbit.co.uk/app)
 5. Download the hex file
 6. Flash the hex file to the micro:bit
