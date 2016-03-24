@@ -146,10 +146,10 @@ function onPressA() {
 	$.testBlock%NX = $.block%NX - 1;
 	$.testBlock%NY = $.block%NY;
 # NEXT %N
+	moveBlock();
 	if ($.movedOK) {
 		$.twiceCentreX = $.twiceCentreX - 2;
 	}
-	moveBlock();
 }
 
 function onPressB() {
@@ -158,10 +158,10 @@ function onPressB() {
 	$.testBlock%NX = $.block%NX + 1;
 	$.testBlock%NY = $.block%NY;
 # NEXT %N
+	moveBlock();
 	if ($.movedOK) {
 		$.twiceCentreX = $.twiceCentreX + 2;
 	}
-	moveBlock();
 }
 
 function onPressAandB() {

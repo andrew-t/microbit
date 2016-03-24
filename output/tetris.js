@@ -452,9 +452,6 @@ var y2 = 0;
 	globals.testBlock2Y = globals.block2Y;
 	globals.testBlock3X = globals.block3X - 1;
 	globals.testBlock3Y = globals.block3Y;
-	if (globals.movedOK) {
-		globals.twiceCentreX = globals.twiceCentreX - 2;
-	}
 	globals.movedOK = true;
 	if (0 < globals.blockCount) {
 		if ((globals.testBlock0X < 0) ||
@@ -497,6 +494,9 @@ var y2 = 0;
 		globals.block2Y = globals.testBlock2Y;
 		globals.block3X = globals.testBlock3X;
 		globals.block3Y = globals.testBlock3Y;
+	}
+	if (globals.movedOK) {
+		globals.twiceCentreX = globals.twiceCentreX - 2;
 	}
 }
 
@@ -527,9 +527,6 @@ var y2 = 0;
 	globals.testBlock2Y = globals.block2Y;
 	globals.testBlock3X = globals.block3X + 1;
 	globals.testBlock3Y = globals.block3Y;
-	if (globals.movedOK) {
-		globals.twiceCentreX = globals.twiceCentreX + 2;
-	}
 	globals.movedOK = true;
 	if (0 < globals.blockCount) {
 		if ((globals.testBlock0X < 0) ||
@@ -572,6 +569,9 @@ var y2 = 0;
 		globals.block2Y = globals.testBlock2Y;
 		globals.block3X = globals.testBlock3X;
 		globals.block3Y = globals.testBlock3Y;
+	}
+	if (globals.movedOK) {
+		globals.twiceCentreX = globals.twiceCentreX + 2;
 	}
 }
 
