@@ -59,19 +59,30 @@ def light_pixel(image, pos, value = 9):
 def unlight_pixel(image, pos):
     light_pixel(image, pos, 0)
 
-def button_sleep(time, queue = []):
-    so_far = 0
-    a = button_a.is_pressed()
-    b = button_b.is_pressed()
-    while so_far < time:
-        if button_a.is_pressed() and not a:
-            queue.append('a')
-        a = button_a.is_pressed()
-        if button_b.is_pressed() and not b:
-            queue.append('b')
-        b = button_b.is_pressed()
+a_pressed = False
+b_pressed = False
+on_double = False
+def button_sleep(time, doubles = True, queue = []):
+    global a_pressed
+    global b_pressed
+    global on_double
+    while time > 0:
+        a_pressed = button_a.is_pressed()
+        b_pressed = button_b.is_pressed()
         sleep(10)
-        so_far += 10
+        time -= 10
+        if doubles:
+            if a_pressed and b_pressed:
+                on_double = True
+            elif not a_pressed and not b_pressed:
+                on_double = False
+            if on_double and (not button_a.is_pressed() or not button_b.is_pressed()):
+                queue.append('ab')
+        if not on_double:
+            if not button_a.is_pressed() and a_pressed:
+                queue.append('a')
+            elif not button_b.is_pressed() and b_pressed:
+                queue.append('b')
     return queue
 
 def random_pos():
@@ -79,7 +90,30 @@ def random_pos():
 
 def play_tetris():
     global score
-    display.scroll('tetris')
+    im = Image(5, 5)
+    block = None
+    while True:
+        block = random.randint(0, 7)
+        if block == 0:
+            block = [ [ [ 9 ] ] ]
+        elif block <= 2:
+            block = [ [ [ 7, 7 ] ], [ [ 7 ], [ 7 ] ] ]
+        elif block <= 6:
+            block = [ [ [ 5, 5 ], [ 5, 0 ] ], [ [ 5, 5 ], [ 0, 5 ] ], [ [ 0, 5 ], [ 5, 5 ] ], [ [ 5, 0 ], [ 5, 5 ] ] ]
+        else:
+            block = [ [ [ 3, 3 ], [ 3, 3 ] ] ]
+        orientation = random.randint(0, len(block))
+        x = 2
+        y = -1
+        while True:
+            for n in range(0, 30):
+                display.show(im)
+                for press in button_sleep(10, True):
+                    if press == 'a':
+                        orientation = (orientation - 1) % len(block)
+                    elif press == 'b':
+                        orientation = (orientation + 1) % len(block)
+
 
 def play_snake():
     global score
@@ -126,6 +160,6 @@ def play_snake():
         light_pixel(im, head, 5)
         light_pixel(im, pip)
         display.show(im)
-        button_sleep(400, queue)
+        button_sleep(400, False, queue)
 
 choose_game()
