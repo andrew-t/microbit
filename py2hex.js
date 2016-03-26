@@ -7,9 +7,14 @@ var fn = process.argv[2],
 	outFn = fn.replace(/(\.py)?$/, '.hex');
 
 var py = fs.readFileSync(fn).toString(),
+	glbPy = fs.readFileSync('global.py').toString(),
 	tpl = fs.readFileSync('python.hex').toString().split('\n'),
 	// Standard Micropython code:
 	hex = tpl.slice(0, 13306);
+
+// Add in boilerplate code, and blank out comments to save RAM
+py = glbPy.replace(/^\#\%.*$/m, py).replace(/^\s*\#.*$/gm, '');
+fs.writeFileSync('.' + fn, py);
 
 // Your script ar bytes:
 var bytes = py.split('').map(char => char.charCodeAt(0));
