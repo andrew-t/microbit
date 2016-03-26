@@ -141,7 +141,7 @@ def play_tetris():
             if crash():
                 y -= 1
                 for pos in block:
-                    if y + pos['y'] < -1:
+                    if y + pos['y'] < 0:
                         game_over = True
                         break
                 else:

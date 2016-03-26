@@ -24,45 +24,56 @@ def choose_game():
             display.show(snake)
 
 def is_lit(image, pos):
+    if pos['x'] < 0 or pos['x'] >= 5 or pos['y'] < 0 or pos['y'] >= 5:
+        return False
     return image.get_pixel(pos['x'], pos['y'])
 
 def light_pixel(image, pos, value = 9):
-    image.set_pixel(pos['x'], pos['y'], value)
+    if pos['x'] >= 0 and pos['x'] < 5 and pos['y'] >= 0 and pos['y'] < 5:
+        image.set_pixel(pos['x'], pos['y'], value)
 
 def unlight_pixel(image, pos):
     light_pixel(image, pos, 0)
 
-a_pressed = False
-b_pressed = False
+a_was_pressed = False
+b_was_pressed = False
 on_double = False
 done_this_double = False
-def button_sleep(time, doubles = True, queue = []):
-    global a_pressed
-    global b_pressed
+def button_sleep(time, doubles = True, queue = None):
+    global a_was_pressed
+    global b_was_pressed
     global on_double
     global done_this_double
+    if queue == None:
+        queue = []
     while time > 0:
-        a_pressed = button_a.is_pressed()
-        b_pressed = button_b.is_pressed()
         sleep(10)
         time -= 10
+        a_down = button_a.is_pressed()
+        b_down = button_b.is_pressed()
+        a_released = a_was_pressed and not a_down
+        b_released = b_was_pressed and not b_down
+        a_pressed = not a_was_pressed and a_down
+        b_pressed = not b_was_pressed and b_down
         if doubles:
-            if a_pressed and b_pressed:
+            # if a second button goes down it is a new double.
+            if a_down and b_down and (a_pressed or b_pressed):
                 on_double = True
-            elif not a_pressed and not b_pressed:
-                on_double = False
-                done_this_double = False
-            if on_double and not done_this_double and (not button_a.is_pressed() or not button_b.is_pressed()):
+            # if one of two buttons is released, that's a double-press
+            if a_was_pressed and b_was_pressed and (a_released or b_released):
                 queue.append('ab')
-                done_this_double = True
+            # if the last button is released, clear the double.
+            if not a_was_pressed and not b_was_pressed:
+                on_double = False
         else:
             on_double = False
-            done_this_double = False
         if not on_double:
-            if not button_a.is_pressed() and a_pressed:
+            if a_released:
                 queue.append('a')
-            elif not button_b.is_pressed() and b_pressed:
+            if b_released:
                 queue.append('b')
+        a_was_pressed = a_down
+        b_was_pressed = b_down
     return queue
 
 def random_pos():
@@ -75,7 +86,7 @@ def play_snake():
     im = Image(5, 5)
     length = 3
     maxLength = 20
-    positions = [ { 'x': 2, 'y': 4 } ] * maxLength
+    positions = [ { 'x': 2, 'y': 5 } ] * maxLength
     headPointer = 2
     tailPointer = 0
     dx = 0
