@@ -14,7 +14,8 @@ var py = fs.readFileSync(fn).toString(),
 // Add in boilerplate code if required
 if (process.argv[3])
 	py = fs.readFileSync(process.argv[3]).toString().replace(/^\#\%.*$/m, py);
-// blank out comments to save RAM
+// blank out comments to save RAM - but keep the empty line because
+// it's just one byte and the line numbers in error messages are useful
 py = py.replace(/^\s*\#.*$/gm, '');
 fs.writeFileSync('.' + fn, py);
 
